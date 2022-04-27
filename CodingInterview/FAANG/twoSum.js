@@ -1,29 +1,17 @@
-const numsArray = [1, 3, 7, 9, 2];
-const targetToFind = 11;
+const array = [1, 3, 7, 9, 2];
+const target = 11;
 
-
-const twoSum = (array, target) => {
-    for(let i=0; i<array.length; i++) {
-        for(let j=i+1; j<array.length; j++) {
-            if (array[i] + array[j] === target){
-                return [i,j]
-            }
-        }
-    }
-}
-
-console.log(
-    twoSum(numsArray, targetToFind)
-)
-
-const findTwoSum = function(nums, target) {
-  for(let p1 = 0; p1 < nums.length; p1++) {
+/* Brute Force */ // time: O(n^2), space: O(1)
+const findTwoSum = function(numbersArray, target) {
+  for(let i = 0; i < numbersArray.length; i++) {
     
-    const numberToFind = target - nums[p1];
+    const numberToFind = target - numbersArray[i];
 
-    for(let p2 = p1 + 1; p2 < nums.length; p2++) {
-      if(numberToFind === nums[p2]) {
-        return [p1, p2];
+    // Note: j = i + 1 (rather than j=1) 
+    // bc needs to be relative to the first pointer (i)
+    for(let j = i + 1; j < numbersArray.length; j++) { 
+      if(numberToFind === numbersArray[j]) {
+        return [i, j];
       }
     }
   }
@@ -31,6 +19,23 @@ const findTwoSum = function(nums, target) {
   return null;
 };
 
-console.log(
-    findTwoSum(numsArray, targetToFind)
-);
+/* Optimal */
+const findTwoSum = function(nums, target) {
+  const numsMap = {};
+  
+  for(let p = 0; p < nums.length; p++) {
+    const currentMapVal = numsMap[nums[p]];
+
+    if(currentMapVal >= 0) {
+      return [currentMapVal, p];
+    } else {
+      const numberToFind = target - nums[p];
+      numsMap[numberToFind] = p;
+    }
+  }
+
+  return null;
+}
+
+
+console.log(findTwoSum(array, target));
